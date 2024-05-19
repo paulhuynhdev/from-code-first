@@ -1,12 +1,22 @@
-import express from 'express'
-import UserController from '../controllers/user.controller'
+import express from "express";
+import UserController from "../controllers/user.controller";
+import RequestValidate from "../middlewares/request.validate";
+import { CreateUserSchema, UpdateUserSchema } from "../validators/user.schema";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/new', UserController.createUser)
+router.post(
+  "/new",
+  RequestValidate.body(CreateUserSchema),
+  UserController.createUser
+);
 
-router.post('/edit/:userId', UserController.editUser)
+router.post(
+  "/edit/:userId",
+  RequestValidate.body(UpdateUserSchema),
+  UserController.editUser
+);
 
-router.get('/', UserController.getUserByEmail)
+router.get("/", UserController.getUserByEmail);
 
-export default router
+export default router;
