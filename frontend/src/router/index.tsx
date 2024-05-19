@@ -3,6 +3,7 @@ import ErrorPage from "../pages/notFound";
 import RegisterPage from "../pages/register";
 import { useRoutes, RouteObject } from "react-router-dom";
 import { ROUTES } from "../constants/endpoint";
+import "react-toastify/dist/ReactToastify.css";
 
 const mainRoutes: RouteObject[] = [
   {
