@@ -139,11 +139,33 @@ const getUserByEmail = async (req: Request, res: Response) => {
 
 const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await prisma.post.findMany({});
+    const { sort } = req.query;
 
-    return res.status(200).json({
+    if (sort !== "recent") {
+      return res.status(400).json({
+        error: Errors.ClientError,
+        data: undefined,
+        success: false,
+      });
+    }
+    const postsWithVotes = await prisma.post.findMany({
+      include: {
+        votes: true,
+        memberPostedBy: {
+          include: {
+            user: true,
+          },
+        },
+        comments: true,
+      },
+      orderBy: {
+        dateCreated: "desc",
+      },
+    });
+
+    return res.json({
       error: undefined,
-      data: users,
+      data: { posts: postsWithVotes },
       success: true,
     });
   } catch (error) {
