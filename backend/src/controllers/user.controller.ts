@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { prisma } from "../index";
 import Errors from "../constants/error";
 import generateRandomPassword from "../helpers/generateRandomPassword";
 import parseUserForResponse from "../helpers/parseUserForResponse";
+import { prisma } from "../database";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -137,8 +137,49 @@ const getUserByEmail = async (req: Request, res: Response) => {
   }
 };
 
+const getUsers = async (req: Request, res: Response) => {
+  try {
+    const { sort } = req.query;
+
+    if (sort !== "recent") {
+      return res.status(400).json({
+        error: Errors.ClientError,
+        data: undefined,
+        success: false,
+      });
+    }
+    const postsWithVotes = await prisma.post.findMany({
+      include: {
+        votes: true,
+        memberPostedBy: {
+          include: {
+            user: true,
+          },
+        },
+        comments: true,
+      },
+      orderBy: {
+        dateCreated: "desc",
+      },
+    });
+
+    return res.json({
+      error: undefined,
+      data: { posts: postsWithVotes },
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "ServerError",
+      data: undefined,
+      success: false,
+    });
+  }
+};
+
 export default {
   createUser,
   editUser,
   getUserByEmail,
+  getUsers,
 };
