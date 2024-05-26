@@ -4,7 +4,7 @@ import axios from "axios";
 export const api = {
   posts: {
     getPosts: () => {
-      return axios.get("http://localhost:3000/posts?sort=recent");
+      return axios.post("http://localhost:3000/users?sort=recent");
     },
   },
   register: (input: RegistrationInput) => {

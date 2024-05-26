@@ -7,7 +7,7 @@ import moment from "moment";
 type Vote = { id: number; postId: number; voteType: "Upvote" | "Downvote" };
 type Comment = {};
 
-type Post = {
+export type Post = {
   title: string;
   dateCreated: string;
   memberPostedBy: any;
