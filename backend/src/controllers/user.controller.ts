@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { prisma } from "../index";
 import Errors from "../constants/error";
 import generateRandomPassword from "../helpers/generateRandomPassword";
 import parseUserForResponse from "../helpers/parseUserForResponse";
+import { prisma } from "../database";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -137,8 +137,27 @@ const getUserByEmail = async (req: Request, res: Response) => {
   }
 };
 
+const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.post.findMany({});
+
+    return res.status(200).json({
+      error: undefined,
+      data: users,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "ServerError",
+      data: undefined,
+      success: false,
+    });
+  }
+};
+
 export default {
   createUser,
   editUser,
   getUserByEmail,
+  getUsers,
 };

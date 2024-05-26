@@ -19,4 +19,6 @@ router.post(
 
 router.get("/", UserController.getUserByEmail);
 
+router.post("/", UserController.getUsers);
+
 export default router;
