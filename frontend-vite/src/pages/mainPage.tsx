@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { Layout } from "../components/layout";
 import { PostsList } from "../components/postsList";
 import { PostsViewSwitcher } from "../components/postsViewSwitcher";
-import { api } from "../api";
 
-type Props = {};
-
-export const MainPage = (props: Props) => {
+export const MainPage = () => {
   const posts = [
     {
       title: "First Post",
